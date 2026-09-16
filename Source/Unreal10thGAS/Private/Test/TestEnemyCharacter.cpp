@@ -5,9 +5,13 @@
 #include "Widget/OverHeadWidget.h"
 #include "AbilitySystemComponent.h"
 #include "Components/WidgetComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 ATestEnemyCharacter::ATestEnemyCharacter()
 {
+	// 카메라를 바라보는 빌보드 회전 처리를 위해 틱 활성화
+	PrimaryActorTick.bCanEverTick = true;
+
 	OverHeadWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("OverheadWidgetComp"));
 	OverHeadWidgetComponent->SetupAttachment(RootComponent);
 
@@ -24,7 +28,7 @@ void ATestEnemyCharacter::BeginPlay()
 	UE_LOG(LogTemp, Log, TEXT("BeginPlay"));
 	if (IsValid(AbilitiSystemComponent))
 	{
-		AbilitiSystemComponent->InitAbilityActorInfo(this, this);
+		AbilitiSystemComponent->InitAbilityActorInfo(this, this);	// 타이밍 문제로 추가 처리
 		InitializeOverHeadWidget();
 	}
 }
@@ -34,6 +38,16 @@ void ATestEnemyCharacter::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 	UE_LOG(LogTemp, Log, TEXT("PossessedBy"));
 	
+}
+
+void ATestEnemyCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	if (bFaceCamera)
+	{
+		UpdateOverheadWidgetRotation();
+	}
 }
 
 void ATestEnemyCharacter::InitializeOverHeadWidget()
@@ -50,5 +64,28 @@ void ATestEnemyCharacter::InitializeOverHeadWidget()
 			UE_LOG(LogTemp, Log, TEXT("UOverHeadWidget 캐스트 성공"));
 			OverHeadWidget->InitializeWithAbilitySystem(this);
 		}
+	}
+}
+
+void ATestEnemyCharacter::UpdateOverheadWidgetRotation()
+{
+	if (!OverHeadWidgetComponent) return;
+
+	if (APlayerCameraManager* CameraManager = UGameplayStatics::GetPlayerCameraManager(this, 0))
+	{
+		// 카메라의 전방 벡터와 정확히 마주보는 방향(-CameraForward, 사이각 180도)으로 회전
+		const FVector CameraForward = CameraManager->GetCameraRotation().Vector();
+		FRotator WidgetRotation = (-CameraForward).Rotation();
+
+		if (bLockWidgetPitch)
+		{
+			WidgetRotation.Pitch = 0.0f;
+		}
+		if (bLockWidgetRoll)
+		{
+			WidgetRotation.Roll = 0.0f;
+		}
+
+		OverHeadWidgetComponent->SetWorldRotation(WidgetRotation);
 	}
 }
