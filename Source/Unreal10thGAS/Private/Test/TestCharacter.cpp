@@ -4,6 +4,7 @@
 #include "Test/TestCharacter.h"
 #include "AbilitySystemComponent.h"
 #include "GAS/StatAttributeSet.h"
+#include "Framework/TestGASHUD.h"
 
 // Sets default values
 ATestCharacter::ATestCharacter()
@@ -30,15 +31,6 @@ UStatAttributeSet* ATestCharacter::GetStatAttribute() const
 void ATestCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
-	if (IsValid(AbilitiSystemComponent))
-	{
-		AbilitiSystemComponent->InitAbilityActorInfo(this, this);
-
-		FOnGameplayAttributeValueChange& HealthChange = AbilitiSystemComponent->GetGameplayAttributeValueChangeDelegate(UStatAttributeSet::GetHealthAttribute());
-		HealthChange.AddUObject(this, &ATestCharacter::OnHealthChanged);
-	}
-	
 }
 
 // Called every frame
@@ -55,8 +47,29 @@ void ATestCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 }
 
-void ATestCharacter::OnHealthChanged(const FOnAttributeChangeData& InData)
+void ATestCharacter::PossessedBy(AController* NewController)
 {
-	UE_LOG(LogTemp, Log, TEXT("[ATestCharacter] 체력이 변경되었습니다. (%.1f) -> (%.1f)"), InData.OldValue, InData.NewValue);
+	Super::PossessedBy(NewController);
+
+	if (IsValid(AbilitiSystemComponent))
+	{
+		AbilitiSystemComponent->InitAbilityActorInfo(this, this);
+
+		//FOnGameplayAttributeValueChange& HealthChange = AbilitiSystemComponent->GetGameplayAttributeValueChangeDelegate(UStatAttributeSet::GetHealthAttribute());
+		//HealthChange.AddUObject(this, &ATestCharacter::OnHealthChanged);
+	}
+	if (APlayerController* PC = Cast<APlayerController>(NewController))
+	{
+		// 플레이어 일때만 처리
+		if (ATestGASHUD* TestGASHUD = Cast<ATestGASHUD>(PC->GetHUD()))
+		{
+			TestGASHUD->InitHUD(this);	// 레이스 컨디션 대비
+		}
+	}
 }
+
+//void ATestCharacter::OnHealthChanged(const FOnAttributeChangeData& InData)
+//{
+//	UE_LOG(LogTemp, Log, TEXT("[ATestCharacter] 체력이 변경되었습니다. (%.1f) -> (%.1f)"), InData.OldValue, InData.NewValue);
+//}
 

@@ -32,7 +32,9 @@ protected:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	virtual void OnHealthChanged(const FOnAttributeChangeData& InData);
+	virtual void PossessedBy(AController* NewController) override;
+
+	//virtual void OnHealthChanged(const FOnAttributeChangeData& InData);
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "GAS")

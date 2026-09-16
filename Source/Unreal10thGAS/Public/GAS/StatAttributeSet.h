@@ -32,6 +32,14 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Base Stat")
 	FGameplayAttributeData MaxHealth;
 	ATTRIBUTE_ACCESSORS_BASIC(UStatAttributeSet, MaxHealth);
+
+	UPROPERTY(BlueprintReadOnly, Category = "Base Stat")
+	FGameplayAttributeData Stamina;
+	ATTRIBUTE_ACCESSORS_BASIC(UStatAttributeSet, Stamina);
+
+	UPROPERTY(BlueprintReadOnly, Category = "Base Stat")
+	FGameplayAttributeData MaxStamina;
+	ATTRIBUTE_ACCESSORS_BASIC(UStatAttributeSet, MaxStamina);
 	
 };
 
