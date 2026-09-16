@@ -4,7 +4,6 @@
 #include "Test/TestCharacter.h"
 #include "AbilitySystemComponent.h"
 #include "GAS/StatAttributeSet.h"
-#include "Framework/TestGASHUD.h"
 
 // Sets default values
 ATestCharacter::ATestCharacter()
@@ -57,14 +56,6 @@ void ATestCharacter::PossessedBy(AController* NewController)
 
 		//FOnGameplayAttributeValueChange& HealthChange = AbilitiSystemComponent->GetGameplayAttributeValueChangeDelegate(UStatAttributeSet::GetHealthAttribute());
 		//HealthChange.AddUObject(this, &ATestCharacter::OnHealthChanged);
-	}
-	if (APlayerController* PC = Cast<APlayerController>(NewController))
-	{
-		// 플레이어 일때만 처리
-		if (ATestGASHUD* TestGASHUD = Cast<ATestGASHUD>(PC->GetHUD()))
-		{
-			TestGASHUD->InitHUD(this);	// 레이스 컨디션 대비
-		}
 	}
 }
 

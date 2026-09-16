@@ -7,6 +7,9 @@ UStatAttributeSet::UStatAttributeSet()
 {
 	InitHealth(100.0f);
 	InitMaxHealth(100.0f);
+
+	InitStamina(100.0f);
+	InitMaxStamina(100.0f);
 }
 
 void UStatAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
