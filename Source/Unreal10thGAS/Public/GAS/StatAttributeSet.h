@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AttributeSet.h"
 #include "AbilitySystemComponent.h"
+#include "GameplayEffectExtension.h"
 #include "StatAttributeSet.generated.h"
 
 /**
@@ -25,6 +26,9 @@ public:
 	// 값의 변화 감지나, UI에 반영하기 위해 사용
 	virtual void PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue) override;
 
+	// 이펙트가 적용 된 후에 실행되는 함수
+	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
+
 	UPROPERTY(BlueprintReadOnly, Category = "Base Stat")
 	FGameplayAttributeData Health;
 	ATTRIBUTE_ACCESSORS_BASIC(UStatAttributeSet, Health);
@@ -41,6 +45,9 @@ public:
 	FGameplayAttributeData MaxStamina;
 	ATTRIBUTE_ACCESSORS_BASIC(UStatAttributeSet, MaxStamina);
 	
+	UPROPERTY(BlueprintReadOnly, Category = "Meta Attribute")
+	FGameplayAttributeData Damage;
+	ATTRIBUTE_ACCESSORS_BASIC(UStatAttributeSet, Damage);
 };
 
 /*
