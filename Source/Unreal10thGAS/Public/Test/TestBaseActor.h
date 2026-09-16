@@ -25,6 +25,6 @@ protected:
 	virtual void Tick(float DeltaTime) override;
 
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GAS|Test")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GAS")
 	TObjectPtr<ATestCharacter> Target;
 };

@@ -25,7 +25,7 @@ ATestEnemyCharacter::ATestEnemyCharacter()
 void ATestEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	UE_LOG(LogTemp, Log, TEXT("BeginPlay"));
+	//UE_LOG(LogTemp, Log, TEXT("BeginPlay"));
 	if (IsValid(AbilitiSystemComponent))
 	{
 		AbilitiSystemComponent->InitAbilityActorInfo(this, this);	// 타이밍 문제로 추가 처리
@@ -36,7 +36,7 @@ void ATestEnemyCharacter::BeginPlay()
 void ATestEnemyCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
-	UE_LOG(LogTemp, Log, TEXT("PossessedBy"));
+	//UE_LOG(LogTemp, Log, TEXT("PossessedBy"));
 	
 }
 
@@ -54,14 +54,14 @@ void ATestEnemyCharacter::InitializeOverHeadWidget()
 {
 	if (!OverHeadWidgetComponent) return;
 
-	UE_LOG(LogTemp, Log, TEXT("OverHeadWidgetComponent 있음"));
+	//UE_LOG(LogTemp, Log, TEXT("OverHeadWidgetComponent 있음"));
 
 	if (UUserWidget* UserWidget = OverHeadWidgetComponent->GetUserWidgetObject())
 	{
-		UE_LOG(LogTemp, Log, TEXT("UserWidget 있음"));
+		//UE_LOG(LogTemp, Log, TEXT("UserWidget 있음"));
 		if (UOverHeadWidget* OverHeadWidget = Cast<UOverHeadWidget>(UserWidget))
 		{
-			UE_LOG(LogTemp, Log, TEXT("UOverHeadWidget 캐스트 성공"));
+			//UE_LOG(LogTemp, Log, TEXT("UOverHeadWidget 캐스트 성공"));
 			OverHeadWidget->InitializeWithAbilitySystem(this);
 		}
 	}
